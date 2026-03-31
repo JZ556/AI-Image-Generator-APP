@@ -88,6 +88,15 @@ export default function Index() {
         <View style = {styles.imageContainer}>
           <Image source={require('@/sample-image.jpg')} style = {styles.image}></Image>
         </View>
+
+        <View>
+          <TouchableOpacity style = {styles.downLoadButton}onPress = {() => {}}>
+            <FontAwesome5 name="download" size={20}/>
+          </TouchableOpacity>
+          <TouchableOpacity style = {styles.button}onPress = {() => {}}>
+            <Text>Share</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </>
   );
@@ -165,6 +174,15 @@ const styles = StyleSheet.create({
     flex: 1,
     resizeMode: 'contain',
     width: '100%',
-    
-  }
+  },
+  downLoadButton: {
+    backgroundColor: Colors.accent,
+    padding: 12,
+    borderRadius: '50%',
+    justifyContent: "center",
+    alignItems: 'center',
+    height: 45,
+    width: 45,
+
+  },
 });
