@@ -1,6 +1,6 @@
 import { Colors } from "@/utils/Colors";
 import { Stack } from "expo-router";
-import { Text, View, StyleSheet, TextInput } from "react-native";
+import { Text, View, StyleSheet, TextInput, Image, Dimensions } from "react-native";
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import { TouchableOpacity } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
@@ -84,10 +84,17 @@ export default function Index() {
         <TouchableOpacity style = {styles.button}onPress = {() => {}}>
           <Text style = {styles.buttonText}>Generate Image</Text>
         </TouchableOpacity>
+
+        <View style = {styles.imageContainer}>
+          <Image source={require('@/sample-image.jpg')} style = {styles.image}></Image>
+        </View>
       </View>
     </>
   );
 }
+
+const windowWidth = Dimensions.get('window').width;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -145,5 +152,19 @@ const styles = StyleSheet.create({
     letterSpacing: 1.2,
     fontWeight: "700",
     fontSize: 18,
+  },
+  imageContainer: {
+    height: 300,
+    width: windowWidth-40,
+    marginTop: 20,
+    borderRadius: 10,
+    borderColor: Colors.accent,
+    borderWidth: StyleSheet.hairlineWidth,
+  },
+  image: {
+    flex: 1,
+    resizeMode: 'contain',
+    width: '100%',
+    
   }
 });
