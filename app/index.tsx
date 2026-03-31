@@ -1,6 +1,11 @@
 import { Colors } from "@/utils/Colors";
 import { Stack } from "expo-router";
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet, TextInput } from "react-native";
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import { TouchableOpacity } from "react-native";
+
+
+
 
 export default function Index() {
   return (
@@ -9,10 +14,22 @@ export default function Index() {
         options={{
           title: "AI Image Generator",
           headerStyle: { backgroundColor: Colors.background },
+          headerTitleStyle: { color: Colors.text }
         }}
       />
       <View style={styles.container}>
-        <Text>Edit app/index.tsx to edit this screen.</Text>
+        <View style= {{height:150}}>
+          <TextInput
+            placeholder="Describe your image imagination in detail..."
+            placeholderTextColor={Colors.placeholder}
+            style={styles.inputField}
+            numberOfLines={3}
+            multiline={true}
+          />
+          <TouchableOpacity onPress={() => {}}>
+            <FontAwesome5 name="dice" size={20} color={Colors.white} />
+          </TouchableOpacity>
+        </View>
       </View>
     </>
   );
@@ -23,4 +40,16 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: Colors.background,
   },
+  inputField: {
+    backgroundColor: Colors.dark,
+    borderRadius: 10,
+    padding: 20,
+    borderColor: Colors.accent,
+    borderWidth: StyleSheet.hairlineWidth,
+    fontSize: 16,
+    fontWeight: "500",
+    letterSpacing: 0.2,
+    height: 150,
+    color: Colors.text,
+  }
 });
