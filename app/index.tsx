@@ -3,11 +3,26 @@ import { Stack } from "expo-router";
 import { Text, View, StyleSheet, TextInput } from "react-native";
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import { TouchableOpacity } from "react-native";
+import {Dropdown} from "react-native-element-dropdown"; 
+import { useState } from "react";
 
+const data = [
+  { label: 'Item 1', value: '1' },
+  { label: 'Item 2', value: '2' },
+  { label: 'Item 3', value: '3' },
+  { label: 'Item 4', value: '4' },
+  { label: 'Item 5', value: '5' },
+  { label: 'Item 6', value: '6' },
+  { label: 'Item 7', value: '7' },
+  { label: 'Item 8', value: '8' },
+];
 
 
 
 export default function Index() {
+  const [value, setValue] = useState(null);
+
+
   return (
     <>
       <Stack.Screen
@@ -30,6 +45,21 @@ export default function Index() {
             <FontAwesome5 name="dice" size={20} color={Colors.black} />
           </TouchableOpacity>
         </View>
+
+        <Dropdown
+        style={styles.dropdown}
+        placeholderStyle={styles.placeholderStyle}
+        selectedTextStyle={styles.selectedTextStyle}
+        data={data}
+        maxHeight={300}
+        labelField="label"
+        valueField="value"
+        placeholder="Select item"
+        value={value}
+        onChange={item => {
+          setValue(item.value);
+        }}
+      />
       </View>
     </>
   );
@@ -60,5 +90,23 @@ const styles = StyleSheet.create({
     position: "relative",
     bottom: 60,
     right: 20,
-  }
+  },
+  dropdown:{
+    marginTop: 20,
+    height: 50,
+    backgroundColor: Colors.dark,
+    borderRadius: 10,
+    borderColor: Colors.accent,
+    padding:12,
+    borderWidth: StyleSheet.hairlineWidth,
+  },
+  placeholderStyle:{
+    fontSize: 16,
+    color: Colors.placeholder,
+
+  },
+  selectedTextStyle:{
+    fontSize: 16,
+    color: Colors.text,
+  },
 });
