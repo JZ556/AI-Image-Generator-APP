@@ -26,8 +26,8 @@ export default function Index() {
             numberOfLines={3}
             multiline={true}
           />
-          <TouchableOpacity onPress={() => {}}>
-            <FontAwesome5 name="dice" size={20} color={Colors.white} />
+          <TouchableOpacity style={styles.ideaButton} onPress={() => {}}>
+            <FontAwesome5 name="dice" size={20} color={Colors.black} />
           </TouchableOpacity>
         </View>
       </View>
@@ -51,5 +51,14 @@ const styles = StyleSheet.create({
     letterSpacing: 0.2,
     height: 150,
     color: Colors.text,
+  },
+  ideaButton: {
+    backgroundColor: Colors.accent,
+    padding: 16,
+    borderRadius: "50%",
+    alignSelf: "flex-end",
+    position: "relative",
+    bottom: 60,
+    right: 20,
   }
 });
