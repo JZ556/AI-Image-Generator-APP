@@ -14,10 +14,17 @@ const modelData = [
   { label: 'Stable Diffusion v1.5', value: 'stable-diffusion-v1-5' },
 ];
 
+const aspectRatioData =[
+  { label: '1/1', value: '1/1' },
+  { label: '16/9', value: '16/9' },
+  { label: '9/16', value: '9/16' },
+];
+
 
 
 export default function Index() {
-  const [value, setValue] = useState(null);
+  const [model, setModel] = useState<string>("");
+  const [aspectRatio, setAspectRatio] = useState<string>("");
 
 
   return (
@@ -51,10 +58,25 @@ export default function Index() {
           maxHeight={300}
           labelField="label"
           valueField="value"
-          placeholder="Select item"
-          value={value}
+          placeholder="Select Model"
+          value={model}
           onChange={item => {
-            setValue(item.value);
+            setModel(item.value);
+          }}
+        />
+
+        <Dropdown
+          style={styles.dropdown}
+          placeholderStyle={styles.placeholderStyle}
+          selectedTextStyle={styles.selectedTextStyle}
+          data={aspectRatioData}
+          maxHeight={300}
+          labelField="label"
+          valueField="value"
+          placeholder="Aspect Ratio"
+          value={aspectRatio}
+          onChange={item => {
+            setAspectRatio(item.value);
           }}
         />
       </View>
