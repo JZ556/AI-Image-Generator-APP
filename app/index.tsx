@@ -25,6 +25,7 @@ const aspectRatioData =[
 export default function Index() {
   const [model, setModel] = useState<string>("");
   const [aspectRatio, setAspectRatio] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
 
   return (
@@ -79,6 +80,10 @@ export default function Index() {
             setAspectRatio(item.value);
           }}
         />
+
+        <TouchableOpacity style = {styles.button}onPress = {() => {}}>
+          <Text style = {styles.buttonText}>Generate Image</Text>
+        </TouchableOpacity>
       </View>
     </>
   );
@@ -128,4 +133,17 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: Colors.text,
   },
+  button: {
+    marginTop: 20,
+    backgroundColor: Colors.accent,
+    padding: 12,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  buttonText: {
+    color: Colors.black,
+    letterSpacing: 1.2,
+    fontWeight: "700",
+    fontSize: 18,
+  }
 });
