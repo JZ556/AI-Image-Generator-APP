@@ -1,7 +1,7 @@
 import { Colors } from "@/utils/Colors";
 import { Stack } from "expo-router";
-import { Text, View, StyleSheet, TextInput, Image, Dimensions, ScrollView, } from "react-native";
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'; 
+import { Text, View, StyleSheet, TextInput, Image, Dimensions, ScrollView, ActivityIndicator } from "react-native";
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import { TouchableOpacity } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
@@ -15,7 +15,7 @@ const modelData = [
   { label: 'Stable Diffusion v1.5', value: 'stable-diffusion-v1-5' },
 ];
 
-const aspectRatioData =[
+const aspectRatioData = [
   { label: '1/1', value: '1/1' },
   { label: '16/9', value: '16/9' },
   { label: '9/16', value: '9/16' },
@@ -38,8 +38,8 @@ export default function Index() {
           headerTitleStyle: { color: Colors.text }
         }}
       />
-      <SafeAreaView style = {{flex: 1 , backgroundColor: Colors.background, }}>
-        <ScrollView style = {styles.container}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: Colors.background, }}>
+        <ScrollView style={styles.container}>
           <View >
             <View style={{ height: 150 }}>
               <TextInput
@@ -84,20 +84,26 @@ export default function Index() {
               }}
             />
 
-            <TouchableOpacity style = {styles.button}onPress = {() => {}}>
-              <Text style = {styles.buttonText}>Generate Image</Text>
+            <TouchableOpacity style={styles.button} onPress={() => { }}>
+              <Text style={styles.buttonText}>Generate Image</Text>
             </TouchableOpacity>
 
-            <View style = {styles.imageContainer}>
-              <Image source={require('@/sample-image.jpg')} style = {styles.image}></Image>
+            {isLoading && (
+              <View style={[styles.imageContainer,{justifyContent: 'center'}]}>
+                <ActivityIndicator size={'large'} ></ActivityIndicator>
+              </View>
+            )}
+
+            <View style={styles.imageContainer}>
+              <Image source={require('@/sample-image.jpg')} style={styles.image}></Image>
             </View>
 
-            <View style = {styles.buttonContainer}>
-              <TouchableOpacity style = {styles.downLoadButton}onPress = {() => {}}>
-                <FontAwesome5 name="download" size={20}/>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity style={styles.downLoadButton} onPress={() => { }}>
+                <FontAwesome5 name="download" size={20} />
               </TouchableOpacity>
-              <TouchableOpacity style = {styles.downLoadButton}onPress = {() => {}}>
-                <FontAwesome5 name="share" size = {20} />
+              <TouchableOpacity style={styles.downLoadButton} onPress={() => { }}>
+                <FontAwesome5 name="share" size={20} />
               </TouchableOpacity>
             </View>
           </View>
@@ -169,7 +175,7 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     height: 300,
-    width: windowWidth-40,
+    width: windowWidth - 40,
     marginTop: 20,
     borderRadius: 10,
     borderColor: Colors.accent,
