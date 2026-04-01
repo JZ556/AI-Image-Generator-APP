@@ -1,6 +1,7 @@
 import { Colors } from "@/utils/Colors";
 import { Stack } from "expo-router";
-import { Text, View, StyleSheet, TextInput, Image, Dimensions } from "react-native";
+import { Text, View, StyleSheet, TextInput, Image, Dimensions, ScrollView, } from "react-native";
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'; 
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import { TouchableOpacity } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
@@ -37,67 +38,71 @@ export default function Index() {
           headerTitleStyle: { color: Colors.text }
         }}
       />
-      <View style={styles.container}>
-        <View style={{ height: 150 }}>
-          <TextInput
-            placeholder="Describe your image imagination in detail..."
-            placeholderTextColor={Colors.placeholder}
-            style={styles.inputField}
-            numberOfLines={3}
-            multiline={true}
-          />
-          <TouchableOpacity style={styles.ideaButton} onPress={() => { }}>
-            <FontAwesome5 name="dice" size={20} color={Colors.black} />
-          </TouchableOpacity>
-        </View>
+      <SafeAreaView style = {{flex: 1 , backgroundColor: Colors.background, }}>
+        <ScrollView style = {styles.container}>
+          <View >
+            <View style={{ height: 150 }}>
+              <TextInput
+                placeholder="Describe your image imagination in detail..."
+                placeholderTextColor={Colors.placeholder}
+                style={styles.inputField}
+                numberOfLines={3}
+                multiline={true}
+              />
+              <TouchableOpacity style={styles.ideaButton} onPress={() => { }}>
+                <FontAwesome5 name="dice" size={20} color={Colors.black} />
+              </TouchableOpacity>
+            </View>
 
-        <Dropdown
-          style={styles.dropdown}
-          placeholderStyle={styles.placeholderStyle}
-          selectedTextStyle={styles.selectedTextStyle}
-          data={modelData}
-          maxHeight={300}
-          labelField="label"
-          valueField="value"
-          placeholder="Select Model"
-          value={model}
-          onChange={item => {
-            setModel(item.value);
-          }}
-        />
+            <Dropdown
+              style={styles.dropdown}
+              placeholderStyle={styles.placeholderStyle}
+              selectedTextStyle={styles.selectedTextStyle}
+              data={modelData}
+              maxHeight={300}
+              labelField="label"
+              valueField="value"
+              placeholder="Select Model"
+              value={model}
+              onChange={item => {
+                setModel(item.value);
+              }}
+            />
 
-        <Dropdown
-          style={styles.dropdown}
-          placeholderStyle={styles.placeholderStyle}
-          selectedTextStyle={styles.selectedTextStyle}
-          data={aspectRatioData}
-          maxHeight={300}
-          labelField="label"
-          valueField="value"
-          placeholder="Aspect Ratio"
-          value={aspectRatio}
-          onChange={item => {
-            setAspectRatio(item.value);
-          }}
-        />
+            <Dropdown
+              style={styles.dropdown}
+              placeholderStyle={styles.placeholderStyle}
+              selectedTextStyle={styles.selectedTextStyle}
+              data={aspectRatioData}
+              maxHeight={300}
+              labelField="label"
+              valueField="value"
+              placeholder="Aspect Ratio"
+              value={aspectRatio}
+              onChange={item => {
+                setAspectRatio(item.value);
+              }}
+            />
 
-        <TouchableOpacity style = {styles.button}onPress = {() => {}}>
-          <Text style = {styles.buttonText}>Generate Image</Text>
-        </TouchableOpacity>
+            <TouchableOpacity style = {styles.button}onPress = {() => {}}>
+              <Text style = {styles.buttonText}>Generate Image</Text>
+            </TouchableOpacity>
 
-        <View style = {styles.imageContainer}>
-          <Image source={require('@/sample-image.jpg')} style = {styles.image}></Image>
-        </View>
+            <View style = {styles.imageContainer}>
+              <Image source={require('@/sample-image.jpg')} style = {styles.image}></Image>
+            </View>
 
-        <View style = {styles.buttonContainer}>
-          <TouchableOpacity style = {styles.downLoadButton}onPress = {() => {}}>
-            <FontAwesome5 name="download" size={20}/>
-          </TouchableOpacity>
-          <TouchableOpacity style = {styles.downLoadButton}onPress = {() => {}}>
-            <FontAwesome5 name="share" size = {20} />
-          </TouchableOpacity>
-        </View>
-      </View>
+            <View style = {styles.buttonContainer}>
+              <TouchableOpacity style = {styles.downLoadButton}onPress = {() => {}}>
+                <FontAwesome5 name="download" size={20}/>
+              </TouchableOpacity>
+              <TouchableOpacity style = {styles.downLoadButton}onPress = {() => {}}>
+                <FontAwesome5 name="share" size = {20} />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
     </>
   );
 }
@@ -107,7 +112,7 @@ const windowWidth = Dimensions.get('window').width;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    paddingHorizontal: 20,
     backgroundColor: Colors.background,
   },
   inputField: {
