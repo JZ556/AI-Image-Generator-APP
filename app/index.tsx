@@ -93,7 +93,7 @@ export default function Index() {
           <TouchableOpacity style = {styles.downLoadButton}onPress = {() => {}}>
             <FontAwesome5 name="download" size={20}/>
           </TouchableOpacity>
-          <TouchableOpacity style = {styles.button}onPress = {() => {}}>
+          <TouchableOpacity style = {styles.downLoadButton}onPress = {() => {}}>
             <FontAwesome5 name="share" size = {20} />
           </TouchableOpacity>
         </View>
@@ -184,7 +184,10 @@ const styles = StyleSheet.create({
     height: 45,
     width: 45,
   },
+
   buttonContainer: {
-    
+    flexDirection: 'row',
+    marginTop: 10,
+    justifyContent: 'space-evenly',
   }
 });
