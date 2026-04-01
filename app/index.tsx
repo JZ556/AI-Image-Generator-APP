@@ -7,6 +7,19 @@ import { TouchableOpacity } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import { useState } from "react";
 
+const examplePrompts = [
+  "A beautiful sunset over a calm ocean",
+  "A group of penguins swimming in the ocean",
+  "A close-up of a flower with a bee hovering nearby",
+  "A portrait of a young woman with long brown hair",
+  "A photo of a cat sleeping on a couch",
+  "A landscape painting of a snowy mountain",
+  "A macro shot of a raindrop on a leaf",
+  "A black and white photo of an old building",
+  "A cyberpunk city with neon signs and flying cars at night",
+  "A peaceful bamboo forest with a hidden ancient temple",
+]
+
 const modelData = [
   { label: 'Flux.1-dev', value: 'black-forest-labs/FLUX.1-dev' },
   { label: 'Flux.1-schnell', value: 'black-forest-labs/FLUX.1-schnell' },
@@ -24,10 +37,19 @@ const aspectRatioData = [
 
 
 export default function Index() {
+  const [prompt, setPrompt] = useState<string>("");
   const [model, setModel] = useState<string>("");
   const [aspectRatio, setAspectRatio] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  const generatePrompt = () => {
+      const randomPrompt = examplePrompts[Math.floor(Math.random() * examplePrompts.length)];
+      setPrompt(randomPrompt);
+  };
+
+  const generateImage = () => {
+    console.log(prompt + model + aspectRatio);
+  };
 
   return (
     <>
@@ -48,8 +70,10 @@ export default function Index() {
                 style={styles.inputField}
                 numberOfLines={3}
                 multiline={true}
+                value= {prompt}
+                onChangeText = {text => setPrompt(text)}
               />
-              <TouchableOpacity style={styles.ideaButton} onPress={() => { }}>
+              <TouchableOpacity style={styles.ideaButton} onPress={() => generatePrompt() }>
                 <FontAwesome5 name="dice" size={20} color={Colors.black} />
               </TouchableOpacity>
             </View>
@@ -84,7 +108,7 @@ export default function Index() {
               }}
             />
 
-            <TouchableOpacity style={styles.button} onPress={() => { }}>
+            <TouchableOpacity style={styles.button} onPress={() => generateImage() }>
               <Text style={styles.buttonText}>Generate Image</Text>
             </TouchableOpacity>
 
