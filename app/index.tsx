@@ -89,12 +89,12 @@ export default function Index() {
           <Image source={require('@/sample-image.jpg')} style = {styles.image}></Image>
         </View>
 
-        <View>
+        <View style = {styles.buttonContainer}>
           <TouchableOpacity style = {styles.downLoadButton}onPress = {() => {}}>
             <FontAwesome5 name="download" size={20}/>
           </TouchableOpacity>
           <TouchableOpacity style = {styles.button}onPress = {() => {}}>
-            <Text>Share</Text>
+            <FontAwesome5 name="share" size = {20} />
           </TouchableOpacity>
         </View>
       </View>
@@ -183,6 +183,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 45,
     width: 45,
-
   },
+  buttonContainer: {
+    
+  }
 });
