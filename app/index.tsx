@@ -50,6 +50,8 @@ export default function Index() {
   
   const generateImage = () => {
     console.log(prompt + model + aspectRatio);
+    setIsLoading(true);
+    const MODEL_URL = `https://router.huggingface.co/hf-inference/models/${model}`
   };
 
   return (
