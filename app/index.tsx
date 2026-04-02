@@ -47,6 +47,7 @@ export default function Index() {
       setPrompt(randomPrompt);
   };
 
+  
   const generateImage = () => {
     console.log(prompt + model + aspectRatio);
   };
@@ -112,15 +113,16 @@ export default function Index() {
               <Text style={styles.buttonText}>Generate Image</Text>
             </TouchableOpacity>
 
-            {isLoading && (
+            {isLoading ?(
               <View style={[styles.imageContainer,{justifyContent: 'center'}]}>
                 <ActivityIndicator size={'large'} ></ActivityIndicator>
               </View>
-            )}
+            ):(
 
             <View style={styles.imageContainer}>
               <Image source={require('@/sample-image.jpg')} style={styles.image}></Image>
             </View>
+            )}
 
             <View style={styles.buttonContainer}>
               <TouchableOpacity style={styles.downLoadButton} onPress={() => { }}>
