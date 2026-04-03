@@ -49,13 +49,29 @@ export default function Index() {
   };
 
   
-  const generateImage = () => {
+  const generateImage = async() => {
     console.log(prompt + model + aspectRatio);
     setIsLoading(true);
     const MODEL_URL = `https://router.huggingface.co/hf-inference/models/${model}`;
     const {width, height} = calculateDimensions(aspectRatio);
     console.log("width:", width);
     console.log("height:", height);
+    const API_KEY = process.env.EXPO_PUBLIC_API_KEY;
+
+    try {
+      const response = await fetch(MODEL_URL,{
+        headers:{
+          Authorization: `Bearer ${API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify({
+
+        })
+      })
+    }catch (error){
+      console.error(error);
+    };
 
   };
 
