@@ -6,6 +6,7 @@ import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import { TouchableOpacity } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import { useState } from "react";
+import { calculateDimensions } from "@/utils/Helpers";
 
 const examplePrompts = [
   "A beautiful sunset over a calm ocean",
@@ -51,7 +52,11 @@ export default function Index() {
   const generateImage = () => {
     console.log(prompt + model + aspectRatio);
     setIsLoading(true);
-    const MODEL_URL = `https://router.huggingface.co/hf-inference/models/${model}`
+    const MODEL_URL = `https://router.huggingface.co/hf-inference/models/${model}`;
+    const {width, height} = calculateDimensions(aspectRatio);
+    console.log("width:", width);
+    console.log("height:", height);
+
   };
 
   return (
