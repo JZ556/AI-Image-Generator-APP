@@ -66,9 +66,16 @@ export default function Index() {
         },
         method: "POST",
         body: JSON.stringify({
-
-        })
+          inputs: prompt,
+          parameters:{width,height},
+        }),
       })
+
+      if(!response.ok){
+        throw new Error((await response.json()).error);
+      };
+      const blob = await response.blob();
+      console.log(blob);
     }catch (error){
       console.error(error);
     };
