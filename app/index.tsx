@@ -41,42 +41,53 @@ export default function Index() {
   const [prompt, setPrompt] = useState<string>("");
   const [model, setModel] = useState<string>("");
   const [aspectRatio, setAspectRatio] = useState<string>("");
+  const [imageURL, setImageURL] = useState<any>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const generatePrompt = () => {
-      const randomPrompt = examplePrompts[Math.floor(Math.random() * examplePrompts.length)];
-      setPrompt(randomPrompt);
+    const randomPrompt = examplePrompts[Math.floor(Math.random() * examplePrompts.length)];
+    setPrompt(randomPrompt);
   };
 
-  
-  const generateImage = async() => {
+
+  const generateImage = async () => {
     console.log(prompt + model + aspectRatio);
+    setImageURL("");
     setIsLoading(true);
     const MODEL_URL = `https://router.huggingface.co/hf-inference/models/${model}`;
-    const {width, height} = calculateDimensions(aspectRatio);
+    const { width, height } = calculateDimensions(aspectRatio);
     console.log("width:", width);
     console.log("height:", height);
     const API_KEY = process.env.EXPO_PUBLIC_API_KEY;
 
     try {
-      const response = await fetch(MODEL_URL,{
-        headers:{
+      const response = await fetch(MODEL_URL, {
+        headers: {
           Authorization: `Bearer ${API_KEY}`,
           "Content-Type": "application/json",
         },
         method: "POST",
         body: JSON.stringify({
           inputs: prompt,
-          parameters:{width,height},
+          parameters: { width, height },
         }),
       })
 
-      if(!response.ok){
+      if (!response.ok) {
         throw new Error((await response.json()).error);
       };
       const blob = await response.blob();
       console.log(blob);
-    }catch (error){
+
+      const fileReaderInstance = new FileReader();
+      fileReaderInstance.readAsDataURL(blob);
+      fileReaderInstance.onload = () => {
+        const base64Data = fileReaderInstance.result;
+        setImageURL(base64Data);
+        setIsLoading(false);
+        console.log('Image Url:', base64Data);
+      }
+    } catch (error) {
       console.error(error);
     };
 
@@ -101,10 +112,10 @@ export default function Index() {
                 style={styles.inputField}
                 numberOfLines={3}
                 multiline={true}
-                value= {prompt}
-                onChangeText = {text => setPrompt(text)}
+                value={prompt}
+                onChangeText={text => setPrompt(text)}
               />
-              <TouchableOpacity style={styles.ideaButton} onPress={() => generatePrompt() }>
+              <TouchableOpacity style={styles.ideaButton} onPress={() => generatePrompt()}>
                 <FontAwesome5 name="dice" size={20} color={Colors.black} />
               </TouchableOpacity>
             </View>
@@ -139,29 +150,43 @@ export default function Index() {
               }}
             />
 
-            <TouchableOpacity style={styles.button} onPress={() => generateImage() }>
+            <TouchableOpacity style={styles.button} onPress={() => generateImage()}>
               <Text style={styles.buttonText}>Generate Image</Text>
             </TouchableOpacity>
 
-            {isLoading ?(
-              <View style={[styles.imageContainer,{justifyContent: 'center'}]}>
+
+
+            {isLoading && (
+              <View style={[styles.imageContainer, { justifyContent: 'center' }]}>
                 <ActivityIndicator size={'large'} ></ActivityIndicator>
               </View>
-            ):(
-
-            <View style={styles.imageContainer}>
-              <Image source={require('@/sample-image.jpg')} style={styles.image}></Image>
-            </View>
             )}
 
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity style={styles.downLoadButton} onPress={() => { }}>
-                <FontAwesome5 name="download" size={20} />
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.downLoadButton} onPress={() => { }}>
-                <FontAwesome5 name="share" size={20} />
-              </TouchableOpacity>
-            </View>
+            {(!isLoading && imageURL) && (
+              <>
+                <View style={styles.imageContainer}>
+                  <Image source={{ uri: imageURL }} style={styles.image}></Image>
+                </View>
+
+
+                <View style={styles.buttonContainer}>
+                  <TouchableOpacity style={styles.downLoadButton} onPress={() => { }}>
+                    <FontAwesome5 name="download" size={20} />
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.downLoadButton} onPress={() => { }}>
+                    <FontAwesome5 name="share" size={20} />
+                  </TouchableOpacity>
+                </View>
+              </>
+            )}
+
+
+
+
+
+
+
+
           </View>
         </ScrollView>
       </SafeAreaView>
