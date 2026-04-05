@@ -120,6 +120,7 @@ export default function Index() {
       await MediaLibrary.saveToLibraryAsync(fileName);
 
       await deleteAsync(fileName);
+      alert("image download successfully");
 
     }catch(error){
 
@@ -203,7 +204,7 @@ export default function Index() {
 
 
                 <View style={styles.buttonContainer}>
-                  <TouchableOpacity style={styles.downLoadButton} onPress={() => { }}>
+                  <TouchableOpacity style={styles.downLoadButton} onPress={() => handleDownload()}>
                     <FontAwesome5 name="download" size={20} />
                   </TouchableOpacity>
                   <TouchableOpacity style={styles.downLoadButton} onPress={() => { }}>
