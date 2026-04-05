@@ -7,6 +7,13 @@ import { TouchableOpacity } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import { useState } from "react";
 import { calculateDimensions } from "@/utils/Helpers";
+import * as FileSystem from 'expo-file-system';
+import * as MediaLibrary from 'expo-media-library';
+import moment from 'moment';
+import * as Sharing from 'expo-sharing';
+
+//unpack FileSystem as any to access the cacheDirectory and documentDirectory and EncodingType
+const { cacheDirectory, documentDirectory, EncodingType, writeAsStringAsync, deleteAsync } = FileSystem as any;
 
 const examplePrompts = [
   "A beautiful sunset over a calm ocean",
@@ -100,6 +107,25 @@ export default function Index() {
     };
   };
 
+  const handleDownload = async() => {
+    const base64Code = imageURL.split('data:image/jpeg;base64,')[1];
+    const date = moment().format('YYYYMMDDhhmmss');
+
+    try {
+      const fileName = cacheDirectory + `${date}.jpeg`; 
+      await writeAsStringAsync(fileName, base64Code, {
+        encoding: EncodingType.Base64,
+      })
+
+      await MediaLibrary.saveToLibraryAsync(fileName);
+
+      await deleteAsync(fileName);
+
+    }catch(error){
+
+    };
+  }
+
   return (
     <>
       <Stack.Screen
@@ -186,14 +212,7 @@ export default function Index() {
                 </View>
               </>
             )}
-
-
-
-
-
-
-
-
+            
           </View>
         </ScrollView>
       </SafeAreaView>
