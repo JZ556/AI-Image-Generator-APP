@@ -89,8 +89,15 @@ export default function Index() {
       }
     } catch (error) {
       console.error(error);
+      setIsLoading(false);
+      if(error instanceof Error){
+        if (error.message.includes("429")){
+          alert("huggingface API rate limit exceeded. Please try again later.");
+        }else{
+          alert("An error occurred. Please try again.");
+        }
+      }
     };
-
   };
 
   return (
