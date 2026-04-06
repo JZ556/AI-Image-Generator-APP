@@ -141,36 +141,37 @@ export default function Index() {
     } catch (error) {
       console.error(error);
       alert("Could not save the image. Check photo library permission.");
-    };
+    }
 
-    const handleShare = async () => {
-      if (!imageURL || typeof imageURL !== "string") {
-        alert("No image to save yet.");
-        return;
-      }
-  
-      const comma = imageURL.indexOf(",");
-      const base64Code = comma >= 0 ? imageURL.slice(comma + 1) : imageURL;
-      if (!base64Code) {
-        alert("Could not read image data.");
-        return;
-      }
-  
-      const date = moment().format("YYYYMMDDHHmmss");
-      const file = new File(Paths.cache, `${date}.jpeg`);
-      try {
-        file.create({ overwrite: true });
-        file.write(base64ToUint8Array(base64Code));
-  
-        await Sharing.shareAsync(file.uri);
+  };
 
-        file.delete();
-        alert("Image shared successfully.");
-      } catch (error) {
-        console.error(error);
-        alert("Could not share the image.");
-      };
-    };
+  const handleShare = async () => {
+    if (!imageURL || typeof imageURL !== "string") {
+      alert("No image to save yet.");
+      return;
+    }
+
+    const comma = imageURL.indexOf(",");
+    const base64Code = comma >= 0 ? imageURL.slice(comma + 1) : imageURL;
+    if (!base64Code) {
+      alert("Could not read image data.");
+      return;
+    }
+
+    const date = moment().format("YYYYMMDDHHmmss");
+    const file = new File(Paths.cache, `${date}.jpeg`);
+    try {
+      file.create({ overwrite: true });
+      file.write(base64ToUint8Array(base64Code));
+
+      await Sharing.shareAsync(file.uri);
+
+      file.delete();
+      console.log('image shared successfully');
+    } catch (error) {
+      console.error(error);
+      alert("Could not share the image.");
+    }
   };
 
   return (
