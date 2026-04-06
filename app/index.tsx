@@ -10,6 +10,8 @@ import { calculateDimensions } from "@/utils/Helpers";
 import * as MediaLibrary from 'expo-media-library';
 import moment from 'moment';
 import { File, Paths } from "expo-file-system";
+import * as Sharing from 'expo-sharing';
+
 
 
 const examplePrompts = [
@@ -139,7 +141,36 @@ export default function Index() {
     } catch (error) {
       console.error(error);
       alert("Could not save the image. Check photo library permission.");
-    }
+    };
+
+    const handleShare = async () => {
+      if (!imageURL || typeof imageURL !== "string") {
+        alert("No image to save yet.");
+        return;
+      }
+  
+      const comma = imageURL.indexOf(",");
+      const base64Code = comma >= 0 ? imageURL.slice(comma + 1) : imageURL;
+      if (!base64Code) {
+        alert("Could not read image data.");
+        return;
+      }
+  
+      const date = moment().format("YYYYMMDDHHmmss");
+      const file = new File(Paths.cache, `${date}.jpeg`);
+      try {
+        file.create({ overwrite: true });
+        file.write(base64ToUint8Array(base64Code));
+  
+        await Sharing.shareAsync(file.uri);
+
+        file.delete();
+        alert("Image shared successfully.");
+      } catch (error) {
+        console.error(error);
+        alert("Could not share the image.");
+      };
+    };
   };
 
   return (
@@ -222,7 +253,7 @@ export default function Index() {
                   <TouchableOpacity style={styles.downLoadButton} onPress={() => handleDownload()}>
                     <FontAwesome5 name="download" size={20} />
                   </TouchableOpacity>
-                  <TouchableOpacity style={styles.downLoadButton} onPress={() => { }}>
+                  <TouchableOpacity style={styles.downLoadButton} onPress={() => handleShare()}>
                     <FontAwesome5 name="share" size={20} />
                   </TouchableOpacity>
                 </View>
