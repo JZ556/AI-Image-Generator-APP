@@ -7,13 +7,10 @@ import { TouchableOpacity } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import { useState } from "react";
 import { calculateDimensions } from "@/utils/Helpers";
-import * as FileSystem from 'expo-file-system';
 import * as MediaLibrary from 'expo-media-library';
 import moment from 'moment';
-import * as Sharing from 'expo-sharing';
+import { File, Paths } from "expo-file-system";
 
-//unpack FileSystem as any to access the cacheDirectory and documentDirectory and EncodingType
-const { cacheDirectory, documentDirectory, EncodingType, writeAsStringAsync, deleteAsync } = FileSystem as any;
 
 const examplePrompts = [
   "A beautiful sunset over a calm ocean",
@@ -42,7 +39,15 @@ const aspectRatioData = [
   { label: '9/16', value: '9/16' },
 ];
 
-
+/** Decodes base64 to bytes for `File.write` — native `write` currently expects a single argument (no options object on some iOS builds). */
+function base64ToUint8Array(base64: string): Uint8Array {
+  const binary = atob(base64);
+  const out = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) {
+    out[i] = binary.charCodeAt(i);
+  }
+  return out;
+}
 
 export default function Index() {
   const [prompt, setPrompt] = useState<string>("");
@@ -97,35 +102,45 @@ export default function Index() {
     } catch (error) {
       console.error(error);
       setIsLoading(false);
-      if(error instanceof Error){
-        if (error.message.includes("429")){
+      if (error instanceof Error) {
+        if (error.message.includes("429")) {
           alert("huggingface API rate limit exceeded. Please try again later.");
-        }else{
+        } else {
           alert("An error occurred. Please try again.");
         }
       }
     };
   };
 
-  const handleDownload = async() => {
-    const base64Code = imageURL.split('data:image/jpeg;base64,')[1];
-    const date = moment().format('YYYYMMDDhhmmss');
+  const handleDownload = async () => {
+    if (!imageURL || typeof imageURL !== "string") {
+      alert("No image to save yet.");
+      return;
+    }
+
+    const comma = imageURL.indexOf(",");
+    const base64Code = comma >= 0 ? imageURL.slice(comma + 1) : imageURL;
+    if (!base64Code) {
+      alert("Could not read image data.");
+      return;
+    }
+
+    const date = moment().format("YYYYMMDDHHmmss");
+    const file = new File(Paths.cache, `${date}.jpeg`);
 
     try {
-      const fileName = cacheDirectory + `${date}.jpeg`; 
-      await writeAsStringAsync(fileName, base64Code, {
-        encoding: EncodingType.Base64,
-      })
+      file.create({ overwrite: true });
+      file.write(base64ToUint8Array(base64Code));
 
-      await MediaLibrary.saveToLibraryAsync(fileName);
+      await MediaLibrary.saveToLibraryAsync(file.uri);
 
-      await deleteAsync(fileName);
-      alert("image download successfully");
-
-    }catch(error){
-
-    };
-  }
+      file.delete();
+      alert("Image saved successfully.");
+    } catch (error) {
+      console.error(error);
+      alert("Could not save the image. Check photo library permission.");
+    }
+  };
 
   return (
     <>
@@ -213,7 +228,7 @@ export default function Index() {
                 </View>
               </>
             )}
-            
+
           </View>
         </ScrollView>
       </SafeAreaView>
