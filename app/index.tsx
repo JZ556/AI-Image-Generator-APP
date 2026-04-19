@@ -1,9 +1,8 @@
 import { Colors } from "@/utils/Colors";
 import { Stack } from "expo-router";
-import { Text, View, StyleSheet, TextInput, Image, Dimensions, ScrollView, ActivityIndicator } from "react-native";
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { Text, View, StyleSheet, TextInput, Image, Dimensions, ScrollView, ActivityIndicator, TouchableOpacity } from "react-native";
+import {  SafeAreaView } from 'react-native-safe-area-context';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
-import { TouchableOpacity } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import { useState } from "react";
 import { calculateDimensions } from "@/utils/Helpers";
